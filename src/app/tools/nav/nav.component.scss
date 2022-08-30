@@ -1,0 +1,15 @@
+:host {
+  .title {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+    margin-right: 20px;
+  }
+  button,
+  mat-icon{
+    color: white;
+  }
+  .toolbar {
+    background: #5353e6;
+  }
+}

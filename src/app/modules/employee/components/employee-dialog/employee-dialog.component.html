@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Hi {{data.name}}</h1>
+<div mat-dialog-content>
+  <p>What's the employee name?</p>
+  <mat-form-field *ngIf="employee" appearance="fill">
+    <mat-label>Full Name</mat-label>
+    <input [(ngModel)]="employee.name" matInput>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button (click)="cancel()" mat-button>Cancel</button>
+  <button (click)="submit()" cdkFocusInitial mat-button>Submit</button>
+</div>
