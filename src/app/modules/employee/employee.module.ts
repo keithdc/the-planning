@@ -8,6 +8,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import {EmployeeDialogModule} from './components/employee-dialog/employee-dialog.module';
+import {MatCardModule} from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import {EmployeeDialogModule} from './components/employee-dialog/employee-dialog
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    EmployeeDialogModule
+    EmployeeDialogModule,
+    MatCardModule,
+    MatProgressSpinnerModule
   ],
 })
 export class EmployeeModule {

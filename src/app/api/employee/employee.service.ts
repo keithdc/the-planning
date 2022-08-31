@@ -23,7 +23,7 @@ export class EmployeeService {
   update(employee: EmployeeInterface): Observable<EmployeeInterface[]> {
     const index = this.employeeList.getValue().findIndex(emp => emp.id === employee.id);
     const employees = this.employeeList.getValue();
-    employees.splice(index, 1,employee);
+    employees.splice(index, 1, employee);
     return this.employeeList;
   }
 

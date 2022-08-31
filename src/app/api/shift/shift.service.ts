@@ -22,8 +22,13 @@ export class ShiftService {
 
   update(shift: ShiftInterface): Observable<ShiftInterface[]> {
     const index = this.shiftList.getValue().findIndex(emp => emp.id === shift.id);
-    const employees = this.shiftList.getValue();
-    this.shiftList.next(employees.splice(index, 1, shift));
+    const shifts = this.shiftList.getValue();
+    shifts.splice(index, 1, shift);
+    return this.shiftList;
+  }
+
+  patch(shifts: ShiftInterface[]): Observable<ShiftInterface[]> {
+    this.shiftList.next([...this.shiftList.getValue(), ...shifts]);
     return this.shiftList;
   }
 }

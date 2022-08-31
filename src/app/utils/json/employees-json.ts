@@ -1,4 +1,4 @@
-import {EmployeeInterface} from '../models/employee/employee.interface';
+import {EmployeeInterface} from '../../models/employee/employee.interface';
 
 export class EmployeesJson {
   public static employees: EmployeeInterface[] = [
@@ -7,11 +7,11 @@ export class EmployeesJson {
       name: 'Keith'
     },
     {
-      id: 1,
+      id: 2,
       name: 'Ken'
     },
     {
-      id: 1,
+      id: 3,
       name: 'Karen'
     }
   ]

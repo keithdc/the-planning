@@ -1,1 +1,42 @@
-<p>shift works!</p>
+<mat-card fxFill fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="40px">
+
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <button (click)="openDialog()" color="primary" mat-mini-fab>
+      <mat-icon>add</mat-icon>
+    </button>
+    <h1 class="text-center">Shifts</h1>
+  </div>
+
+  <table *ngIf="shifts; else loader" [dataSource]="shifts" class="mat-elevation-z8" fxFill mat-table>
+    <ng-container matColumnDef="edit">
+      <th *matHeaderCellDef mat-header-cell></th>
+      <td *matCellDef="let shift" [style.width]="'60px'" mat-cell>
+        <button (click)="openDialog(shift)" color="primary" mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell> Name</th>
+      <td *matCellDef="let shift" mat-cell> {{shift.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startTime">
+      <th *matHeaderCellDef mat-header-cell> Start Time</th>
+      <td *matCellDef="let shift" mat-cell> {{shift.startTime | toTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endTime">
+      <th *matHeaderCellDef mat-header-cell> End Time</th>
+      <td *matCellDef="let shift" mat-cell> {{shift.endTime | toTime}} </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</mat-card>
+
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

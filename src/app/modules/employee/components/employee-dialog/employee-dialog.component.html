@@ -1,12 +1,13 @@
-<h1 mat-dialog-title>Hi {{data.name}}</h1>
 <div mat-dialog-content>
-  <p>What's the employee name?</p>
+  <h3>What's the employee name?</h3>
   <mat-form-field *ngIf="employee" appearance="fill">
     <mat-label>Full Name</mat-label>
     <input [(ngModel)]="employee.name" matInput>
   </mat-form-field>
 </div>
-<div mat-dialog-actions>
+<div align="end" mat-dialog-actions>
   <button (click)="cancel()" mat-button>Cancel</button>
-  <button (click)="submit()" cdkFocusInitial mat-button>Submit</button>
+  <button (click)="submit()" [disabled]="!employee?.name || employee?.name === ''" cdkFocusInitial color="primary"
+          mat-flat-button>Submit
+  </button>
 </div>

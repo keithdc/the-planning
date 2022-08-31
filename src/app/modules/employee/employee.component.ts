@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EmployeeService} from '../../api/employee/employee.service';
 import {Subject, take, takeUntil} from 'rxjs';
 import {EmployeeInterface} from '../../models/employee/employee.interface';
@@ -10,7 +10,7 @@ import {EmployeeDialogComponent} from './components/employee-dialog/employee-dia
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit, OnDestroy {
   employees: EmployeeInterface[] | undefined;
   private unsubscribeAll: Subject<void> = new Subject<void>();
 
@@ -20,6 +20,11 @@ export class EmployeeComponent implements OnInit {
     this.employeeService.getAll().pipe(takeUntil(this.unsubscribeAll)).subscribe(employees => {
       this.employees = employees;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete()
   }
 
   openDialog(employee: EmployeeInterface): void {

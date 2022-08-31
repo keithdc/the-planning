@@ -1,0 +1,26 @@
+<form [formGroup]="formGroup" mat-dialog-content>
+  <h3>{{formGroup.value.id ? 'Update' : 'Create new'}} Shift Template?</h3>
+  <mat-form-field appearance="fill">
+    <mat-label>Shift Name</mat-label>
+    <input formControlName="name" matInput/>
+  </mat-form-field>
+  <div fxLayout="column">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Start Time</mat-label>
+      <input formControlName="startTime" matInput type="time"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>End Time</mat-label>
+      <input formControlName="endTime" matInput type="time"/>
+    </mat-form-field>
+
+  </div>
+</form>
+<div align="end" mat-dialog-actions>
+  <button (click)="cancel()" mat-button>Cancel</button>
+  <button (click)="submit()" [disabled]="formGroup.invalid" cdkFocusInitial color="primary"
+          mat-flat-button>Submit
+  </button>
+</div>
