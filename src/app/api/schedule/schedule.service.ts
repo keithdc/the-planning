@@ -1,22 +1,28 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {PlanningInterface} from '../../models/planning/planning.interface';
+import {AbstractApiService} from '../abstract/abstract-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ScheduleServiceService {
+export class ScheduleServiceService implements AbstractApiService<PlanningInterface> {
   private scheduleList: BehaviorSubject<PlanningInterface[]> = new BehaviorSubject<PlanningInterface[]>([]);
 
   constructor() { }
 
-  getAll(): Observable<PlanningInterface[]> {
-    return this.scheduleList;
-  }
 
   create(schedule: PlanningInterface): Observable<PlanningInterface[]> {
     schedule.id = this.scheduleList.getValue().length + 1;
     this.scheduleList.next([...this.scheduleList.getValue(), schedule]);
+    return this.scheduleList;
+  }
+
+  get(id: number): Observable<PlanningInterface | undefined> {
+    return of(this.scheduleList.getValue().find(schedule => schedule.id === id));
+  }
+
+  getAll(): Observable<PlanningInterface[]> {
     return this.scheduleList;
   }
 

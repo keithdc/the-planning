@@ -1,22 +1,27 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {EmployeeInterface} from '../../models/employee/employee.interface';
+import {AbstractApiService} from '../abstract/abstract-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeService {
+export class EmployeeService implements AbstractApiService<EmployeeInterface> {
   private employeeList: BehaviorSubject<EmployeeInterface[]> = new BehaviorSubject<EmployeeInterface[]>([]);
 
   constructor() { }
 
-  getAll(): Observable<EmployeeInterface[]> {
-    return this.employeeList;
-  }
-
   create(employee: EmployeeInterface): Observable<EmployeeInterface[]> {
     employee.id = this.employeeList.getValue().length + 1;
     this.employeeList.next([...this.employeeList.getValue(), employee]);
+    return this.employeeList;
+  }
+
+  get(id: number): Observable<EmployeeInterface | undefined> {
+    return of(this.employeeList.getValue().find(employee => employee.id === id));
+  }
+
+  getAll(): Observable<EmployeeInterface[]> {
     return this.employeeList;
   }
 
