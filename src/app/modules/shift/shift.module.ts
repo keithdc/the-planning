@@ -10,6 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatButtonModule} from '@angular/material/button';
 import {SharedPipesModule} from '../../utils/pipes/shared-pipes.module';
+import {ContentTemplateModule} from '../../shared/content-template/content-template.module';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {SharedPipesModule} from '../../utils/pipes/shared-pipes.module';
         MatIconModule,
         FlexLayoutModule,
         MatButtonModule,
-        SharedPipesModule
+        SharedPipesModule,
+        ContentTemplateModule
     ]
 })
 export class ShiftModule {

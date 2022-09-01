@@ -38,7 +38,6 @@ export class ShiftComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result: ShiftInterface) => {
-      console.log(result)
       if (result.id) {
         this.shiftService.update(result).pipe(take(1)).subscribe(shifts => {
           this.shifts.data = shifts;

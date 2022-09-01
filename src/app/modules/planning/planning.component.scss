@@ -1,0 +1,22 @@
+:host {
+  .nav {
+    margin: 20px 30px;
+  }
+  mat-grid-list {
+    border-bottom: 1px solid #dedada;
+  }
+  .header {
+    background: #c364ff;
+    mat-grid-tile {
+      color: white;
+    }
+  }
+
+  .content {
+    mat-grid-tile {
+      &:not(:last-child) {
+        border-right: 1px solid #dedada;
+      }
+    }
+  }
+}

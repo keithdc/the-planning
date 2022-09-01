@@ -1,1 +1,32 @@
-<p>planning works!</p>
+<form [formGroup]="formGroup" class="nav" fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="20px">
+  <mat-button-toggle-group aria-label="Font Style" formControlName="calendarView" name="fontStyle">
+    <mat-button-toggle [value]="CalendarEnum.DAY">
+      <mat-icon>calendar_view_day</mat-icon>
+      Day
+    </mat-button-toggle>
+    <mat-button-toggle [value]="CalendarEnum.WEEK">
+      <mat-icon>calendar_view_week</mat-icon>
+      Weekly
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-divider [vertical]="true"></mat-divider>
+  <button color="primary" mat-flat-button (click)="openDialog()">
+    <mat-icon>add</mat-icon>
+    Add Schedule
+  </button>
+</form>
+
+<mat-grid-list [cols]="cols" class="header" rowHeight="50px">
+  <mat-grid-tile>Employee</mat-grid-tile>
+  <mat-grid-tile *ngFor="let date of dates">
+    {{(date | date:'E dd') === (today | date:'E dd') ? 'Today' : date | date:'E dd'}}
+  </mat-grid-tile>
+
+</mat-grid-list>
+
+<mat-grid-list *ngFor="let employee of employees" [cols]="cols" class="content" rowHeight="50px">
+  <mat-grid-tile>{{employee.name}}</mat-grid-tile>
+  <mat-grid-tile *ngFor="let date of dates">
+  </mat-grid-tile>
+
+</mat-grid-list>

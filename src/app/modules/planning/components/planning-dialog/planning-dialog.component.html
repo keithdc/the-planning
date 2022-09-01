@@ -1,0 +1,37 @@
+<form [formGroup]="formGroup" mat-dialog-content>
+  <h3>{{formGroup.value.id ? 'Update' : 'Create new'}} Schedule?</h3>
+  <mat-form-field appearance="fill">
+    <mat-label>Employee</mat-label>
+    <mat-select formControlName="employee">
+      <mat-option *ngFor="let employee of employees" [value]="employee">
+        {{employee.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div formGroupName="schedule" fxLayout="column" fxLayoutGap="20px">
+    <mat-form-field appearance="fill">
+      <mat-label>Shift</mat-label>
+      <mat-select formControlName="shift">
+        <mat-option *ngFor="let shift of shifts" [value]="shift">
+          {{shift.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input [matDatepicker]="picker" matInput>
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+</form>
+<div align="end" mat-dialog-actions>
+  <button (click)="cancel()" mat-button>Cancel</button>
+  <button (click)="submit()" [disabled]="formGroup.invalid" cdkFocusInitial color="primary"
+          mat-flat-button>Submit
+  </button>
+</div>

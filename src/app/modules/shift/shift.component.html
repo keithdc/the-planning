@@ -1,13 +1,5 @@
-<mat-card fxFill fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="40px">
-
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
-    <button (click)="openDialog()" color="primary" mat-mini-fab>
-      <mat-icon>add</mat-icon>
-    </button>
-    <h1 class="text-center">Shifts</h1>
-  </div>
-
-  <table *ngIf="shifts; else loader" [dataSource]="shifts" class="mat-elevation-z8" fxFill mat-table>
+<app-content-template (clicked)="openDialog()" [data]="shifts.data" [title]="'Shifts'">
+  <table [dataSource]="shifts" class="content mat-elevation-z8" fxFill mat-table>
     <ng-container matColumnDef="edit">
       <th *matHeaderCellDef mat-header-cell></th>
       <td *matCellDef="let shift" [style.width]="'60px'" mat-cell>
@@ -35,8 +27,4 @@
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
-</mat-card>
-
-<ng-template #loader>
-  <mat-spinner></mat-spinner>
-</ng-template>
+</app-content-template>

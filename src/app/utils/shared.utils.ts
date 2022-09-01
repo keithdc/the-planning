@@ -49,52 +49,18 @@ export class SharedUtils {
   }
 
   /**
-   * moment start Date
-   *
-   * @param addMonth typeof number
-   * @param format typeof string
-   * @returns Date or formatted date
-   */
-  public static getStartDate(addMonth: number, format?: string): Date | string {
-    const date = moment()
-      .add(addMonth, 'M')
-      .startOf('month');
-    if (format) {
-      return date.format(format);
-    } else {
-      return date.toDate();
-    }
-  }
-
-  /**
-   * moment end Date
-   *
-   * @param addMonth typeof number
-   * @param format typeof string
-   * @returns Date or formatted date
-   */
-  public static getEndDate(addMonth: number, format?: string): Date | string {
-    const date = moment()
-      .add(addMonth, 'M')
-      .endOf('month');
-    if (format) {
-      return date.format(format);
-    } else {
-      return date.toDate();
-    }
-  }
-
-  /**
    * moment start Day
    *
-   * @param addDay typeof number
+   * @param addWeek typeof number
    * @param format typeof string
    * @returns Date or formatted date
    */
-  public static getStartDay(addDay: number, format?: string): Date | string {
+  public static getStartWeek(addDay: number, addWeek: number, format?: string): Date | string {
     const date = moment()
-      .add(addDay, 'd')
-      .startOf('day');
+      .startOf('week')
+      .add(1, 'd')
+      .add(addWeek, 'week')
+      .add(addDay, 'd');
     if (format) {
       return date.format(format);
     } else {
@@ -105,14 +71,16 @@ export class SharedUtils {
   /**
    * moment end Day
    *
-   * @param addDay typeof number
+   * @param addWeek typeof number
    * @param format typeof string
    * @returns Date or formatted date
    */
-  public static getEndDay(addDay: number, format?: string): Date | string {
+  public static getEndWeek(addDay: number, addWeek: number, format?: string): Date | string {
     const date = moment()
-      .add(addDay, 'd')
-      .endOf('day');
+      .endOf('week')
+      .add(1, 'd')
+      .add(addWeek, 'week')
+      .add(addDay, 'd');
     if (format) {
       return date.format(format);
     } else {

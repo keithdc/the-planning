@@ -1,0 +1,15 @@
+<mat-card fxFill fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="40px">
+  <div *ngIf="title" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <button (click)="clicked.emit()" color="primary" mat-mini-fab>
+      <mat-icon>add</mat-icon>
+    </button>
+    <h1 class="text-center">{{title}}</h1>
+  </div>
+  <ng-container *ngIf="data; else loader">
+    <ng-content select=".content"></ng-content>
+  </ng-container>
+</mat-card>
+
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

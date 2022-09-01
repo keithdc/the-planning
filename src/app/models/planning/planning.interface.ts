@@ -4,7 +4,7 @@ import {ShiftInterface} from '../shift/shift.interface';
 export interface PlanningInterface {
   id: number,
   employee: EmployeeInterface;
-  schedule: ScheduleInterface;
+  schedule: ScheduleInterface[];
 }
 
 export interface ScheduleInterface {
