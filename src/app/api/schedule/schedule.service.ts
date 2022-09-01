@@ -6,7 +6,7 @@ import {AbstractApiService} from '../abstract/abstract-api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ScheduleServiceService implements AbstractApiService<PlanningInterface> {
+export class ScheduleService implements AbstractApiService<PlanningInterface> {
   private scheduleList: BehaviorSubject<PlanningInterface[]> = new BehaviorSubject<PlanningInterface[]>([]);
 
   constructor() { }
@@ -27,7 +27,7 @@ export class ScheduleServiceService implements AbstractApiService<PlanningInterf
   }
 
   update(schedule: PlanningInterface): Observable<PlanningInterface[]> {
-    const index = this.scheduleList.getValue().findIndex(emp => emp.id === schedule.id);
+    const index = this.scheduleList.getValue().findIndex(emp => emp.employee.id === schedule.employee.id);
     const schedules = this.scheduleList.getValue();
     schedules.splice(index, 1, schedule);
     return this.scheduleList;

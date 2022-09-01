@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, take, takeUntil} from 'rxjs';
 import {EmployeeService} from '../../api/employee/employee.service';
 import {EmployeeInterface} from '../../models/employee/employee.interface';
@@ -8,7 +8,11 @@ import {SharedUtils} from '../../utils/shared.utils';
 import {MatDialog} from '@angular/material/dialog';
 import {PlanningInterface} from '../../models/planning/planning.interface';
 import {PlanningDialogComponent} from './components/planning-dialog/planning-dialog.component';
-import {ScheduleServiceService} from '../../api/schedule/schedule.service';
+import {ScheduleService} from '../../api/schedule/schedule.service';
+import {ShiftInterface} from '../../models/shift/shift.interface';
+import {ShiftService} from '../../api/shift/shift.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-planning',
@@ -17,20 +21,36 @@ import {ScheduleServiceService} from '../../api/schedule/schedule.service';
 })
 export class PlanningComponent implements OnInit, OnDestroy {
   employees: EmployeeInterface[] | undefined;
+  schedules: PlanningInterface[] | undefined;
+  shifts: ShiftInterface[] | undefined;
   CalendarEnum: typeof CalendarEnum = CalendarEnum;
   formGroup: FormGroup;
   cols: number = 8;
   dates: Date[] = [];
   today: Date = new Date();
+  week: number = 0;
   private unsubscribeAll: Subject<void> = new Subject<void>();
 
-  constructor(private formBuilder: FormBuilder, private employeeService: EmployeeService, public dialog: MatDialog, private sheduleServiceService: ScheduleServiceService) {
+  constructor(private formBuilder: FormBuilder,
+              private employeeService: EmployeeService,
+              public dialog: MatDialog,
+              private sheduleService: ScheduleService,
+              private shiftService: ShiftService,
+              private datePipe: DatePipe) {
     this.formGroup = this.formBuilder.group({
+      day: 0,
+      week: 0,
       calendarView: null,
       date: null,
     });
     this.employeeService.getAll().pipe(takeUntil(this.unsubscribeAll)).subscribe(employees => {
       this.employees = employees;
+    });
+    this.sheduleService.getAll().pipe(takeUntil(this.unsubscribeAll)).subscribe(schedules => {
+      this.schedules = schedules;
+    });
+    this.shiftService.getAll().pipe(takeUntil(this.unsubscribeAll)).subscribe(shifts => {
+      this.shifts = shifts;
     });
     this.formGroup.valueChanges.pipe(takeUntil(this.unsubscribeAll)).subscribe(form => {
       if (form.calendarView === CalendarEnum.DAY) {
@@ -55,10 +75,28 @@ export class PlanningComponent implements OnInit, OnDestroy {
   buildCalendar(): void {
     this.dates = [];
     for (let i = 0; i < this.cols - 1; i++) {
-      this.dates.push(new Date(SharedUtils.getStartWeek(i, 0)));
+      if (this.formGroup.value.calendarView === CalendarEnum.DAY) {
+        this.dates.push(new Date(SharedUtils.getStartDay(i + this.formGroup.value.day)));
+      } else {
+        this.dates.push(new Date(SharedUtils.getStartWeek(i + this.formGroup.value.day, this.formGroup.value.week)));
+      }
     }
   }
 
+  drop(event: CdkDragDrop<string[]>, employee: EmployeeInterface, date: Date) {
+    const daysAdd = +event.container.id - +event.previousContainer.id;
+    const newDate = SharedUtils.addDay(this.dates[+event.previousContainer.id], daysAdd)
+    const schedule = this.schedules?.find(schedule => schedule.employee.id === employee.id);
+    const getSchedule = schedule?.schedules?.find(schedule => this.datePipe.transform(schedule.date, 'shortDate') === this.datePipe.transform(this.dates[+event.previousContainer.id], 'shortDate'));
+    const index = schedule?.schedules?.findIndex(schedule => this.datePipe.transform(schedule.date, 'shortDate') === this.datePipe.transform(this.dates[+event.previousContainer.id], 'shortDate'));
+    if (newDate && getSchedule && schedule) {
+      schedule?.schedules?.splice(index ?? 0, 1, {date: newDate, shift: getSchedule.shift});
+      console.log(schedule)
+      this.sheduleService.update(schedule).pipe(take(1)).subscribe(schedules => {
+        this.schedules = [...schedules];
+      });
+    }
+  }
 
   openDialog(schedule?: PlanningInterface): void {
     const dialogRef = this.dialog.open(PlanningDialogComponent, {
@@ -67,9 +105,35 @@ export class PlanningComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result: PlanningInterface) => {
-      this.sheduleServiceService.create(result).pipe(take(1)).subscribe(schedules => {
-        console.log(schedules)
-      });
+      const findExist = this.schedules?.find(schedule => schedule.employee.id === result.employee.id);
+      if (findExist && findExist.schedules) {
+        if (result.schedule) {
+          findExist.schedules.push(result.schedule);
+        }
+        this.sheduleService.update(findExist).pipe(take(1)).subscribe(schedules => {
+          this.schedules = [...schedules];
+        });
+      } else {
+        this.sheduleService.create(result).pipe(take(1)).subscribe(schedules => {
+          this.schedules = [...schedules];
+        });
+      }
     });
+  }
+
+  subtract(): void {
+    if (this.formGroup.value.calendarView === CalendarEnum.DAY) {
+      this.formGroup.patchValue({day: --this.formGroup.value.day});
+    } else {
+      this.formGroup.patchValue({week: --this.formGroup.value.week});
+    }
+  }
+
+  add(): void {
+    if (this.formGroup.value.calendarView === CalendarEnum.DAY) {
+      this.formGroup.patchValue({day: ++this.formGroup.value.day});
+    } else {
+      this.formGroup.patchValue({week: ++this.formGroup.value.week});
+    }
   }
 }

@@ -1,0 +1,8 @@
+<div *ngIf="schedule" fxLayout="column" fxLayoutGap="20px" class="tile" [style.background]="colors[shiftIndex]">
+  {{schedule.shift.name}}
+
+  <div>
+    <span>{{schedule.shift.startTime}}</span>&nbsp;-&nbsp;<span>{{schedule.shift.endTime}}</span>
+  </div>
+
+</div>

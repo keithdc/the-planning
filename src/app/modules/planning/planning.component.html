@@ -1,4 +1,13 @@
 <form [formGroup]="formGroup" class="nav" fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="20px">
+  <div fxLayout="row" fxLayoutAlign="center center" matTooltip="Add or subtract week/days">
+    <button mat-icon-button color="primary" (click)="subtract()">
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    {{formGroup.value?.calendarView === CalendarEnum.DAY ? formGroup.value?.day : formGroup.value?.week}}
+    <button mat-icon-button color="primary" (click)="add()">
+      <mat-icon>arrow_forward_ios</mat-icon>
+    </button>
+  </div>
   <mat-button-toggle-group aria-label="Font Style" formControlName="calendarView" name="fontStyle">
     <mat-button-toggle [value]="CalendarEnum.DAY">
       <mat-icon>calendar_view_day</mat-icon>
@@ -10,7 +19,7 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-divider [vertical]="true"></mat-divider>
-  <button color="primary" mat-flat-button (click)="openDialog()">
+  <button (click)="openDialog()" color="primary" mat-flat-button>
     <mat-icon>add</mat-icon>
     Add Schedule
   </button>
@@ -24,9 +33,15 @@
 
 </mat-grid-list>
 
-<mat-grid-list *ngFor="let employee of employees" [cols]="cols" class="content" rowHeight="50px">
+<mat-grid-list *ngFor="let employee of employees" [cols]="cols" cdkDropListGroup
+               class="content"
+               rowHeight="50px">
   <mat-grid-tile>{{employee.name}}</mat-grid-tile>
-  <mat-grid-tile *ngFor="let date of dates">
+  <mat-grid-tile cdkDropList (cdkDropListDropped)="drop($event, employee, date)"
+                 *ngFor="let date of dates; let i = index" class="grab" id="{{i}}">
+    <app-schedule-tile cdkDrag [date]="date" [employee]="employee" [schedules]="schedules"
+                       [shifts]="shifts"></app-schedule-tile>
   </mat-grid-tile>
 
 </mat-grid-list>
+
