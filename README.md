@@ -1,7 +1,7 @@
 # Installation
 1) (If not install) Install Git https://git-scm.com/downloads
 2) Go to master branch and clone the repository (if Git not installed please go back to #1)
-3) (If not install) Install NPM https://nodejs.org/en/download/ my version is 8.5
+3) (If not install) Install NPM and NODE https://nodejs.org/en/download/ my version is 8.5
 4) type "npm install" on terminal to install dependecies.
 5) type "npm start" to start the project.
 
