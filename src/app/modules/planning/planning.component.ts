@@ -34,7 +34,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeeService,
               public dialog: MatDialog,
-              private sheduleService: ScheduleService,
+              private scheduleService: ScheduleService,
               private shiftService: ShiftService,
               private datePipe: DatePipe) {
     this.formGroup = this.formBuilder.group({
@@ -46,7 +46,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
     this.employeeService.getAll().pipe(takeUntil(this.unsubscribeAll)).subscribe(employees => {
       this.employees = employees;
     });
-    this.sheduleService.getAll().pipe(takeUntil(this.unsubscribeAll)).subscribe(schedules => {
+    this.scheduleService.getAll().pipe(takeUntil(this.unsubscribeAll)).subscribe(schedules => {
       this.schedules = schedules;
     });
     this.shiftService.getAll().pipe(takeUntil(this.unsubscribeAll)).subscribe(shifts => {
@@ -92,7 +92,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
     if (newDate && getSchedule && schedule) {
       schedule?.schedules?.splice(index ?? 0, 1, {date: newDate, shift: getSchedule.shift});
       console.log(schedule)
-      this.sheduleService.update(schedule).pipe(take(1)).subscribe(schedules => {
+      this.scheduleService.update(schedule).pipe(take(1)).subscribe(schedules => {
         this.schedules = [...schedules];
       });
     }
@@ -110,11 +110,11 @@ export class PlanningComponent implements OnInit, OnDestroy {
         if (result.schedule) {
           findExist.schedules.push(result.schedule);
         }
-        this.sheduleService.update(findExist).pipe(take(1)).subscribe(schedules => {
+        this.scheduleService.update(findExist).pipe(take(1)).subscribe(schedules => {
           this.schedules = [...schedules];
         });
       } else {
-        this.sheduleService.create(result).pipe(take(1)).subscribe(schedules => {
+        this.scheduleService.create(result).pipe(take(1)).subscribe(schedules => {
           this.schedules = [...schedules];
         });
       }

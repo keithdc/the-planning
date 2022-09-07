@@ -13,9 +13,9 @@ import {SchedulesJson} from './utils/json/schedules-json';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private employeeService: EmployeeService, private shiftService: ShiftService, private sheduleService: ScheduleService) {
+  constructor(private employeeService: EmployeeService, private shiftService: ShiftService, private scheduleService: ScheduleService) {
     this.employeeService.patch(EmployeesJson.employees).pipe(take(1)).subscribe();
     this.shiftService.patch(ShiftsJson.shifts).pipe(take(1)).subscribe();
-    this.sheduleService.patch(SchedulesJson.schedules).pipe(take(1)).subscribe();
+    this.scheduleService.patch(SchedulesJson.schedules).pipe(take(1)).subscribe();
   }
 }
